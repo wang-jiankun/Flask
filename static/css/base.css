@@ -1,0 +1,27 @@
+.logo_brand{
+    float: left;
+    height: 50px;
+    padding: 6px 6px;
+
+}
+
+.logo{
+    width: 50px;
+    border-radius: 5px;
+}
+
+body{
+    background: #f3f3f3;
+}
+
+.main{
+    background: #fff;
+    width: 730px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.page-title{
+    text-align: center;
+}
