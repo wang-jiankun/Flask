@@ -3,6 +3,8 @@ from db import db
 import config
 from models import User, Question, Answer
 from decorators import login_required
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -12,7 +14,7 @@ db.init_app(app)
 @app.route('/')
 def index():
     context = {
-        'questions': Question.query.order_by('-create_time').all()
+        'questions': Question.query.order_by(Question.create_time.desc()).all()
     }
     return render_template('index.html', **context)
 
@@ -111,6 +113,18 @@ def search():
     # questions = Question.query.filter(condition).order_by('-create_time')
     questions = Question.query.filter(Question.title.contains(q))
     return render_template('index.html', questions=questions)
+
+
+@app.route('/upload', methods=['POST', 'GET'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        f = request.files['file']
+        base_path = os.path.dirname(__file__)  # 当前文件所在路径
+        upload_path = os.path.join(base_path, 'static/uploads', secure_filename(f.filename))
+        f.save(upload_path)
+        return redirect(url_for('upload'))
+    return render_template('upload.html')
 
 
 @app.before_request
