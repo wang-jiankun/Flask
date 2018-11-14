@@ -120,8 +120,11 @@ def search():
 def upload():
     if request.method == 'POST':
         f = request.files['file']
-        base_path = os.path.dirname(__file__)  # 当前文件所在路径
-        upload_path = os.path.join(base_path, 'static/uploads', secure_filename(f.filename))
+        # base_path = os.path.dirname(__file__)  # 当前文件所在路径
+        path = './static/uploads/'+g.user.username
+        if not os.path.exists(path):
+            os.makedirs(path)
+        upload_path = os.path.join(path, secure_filename(f.filename))
         f.save(upload_path)
         return redirect(url_for('upload'))
     return render_template('upload.html')
